@@ -153,7 +153,9 @@
 	 while(1)
 	 {
 		 button1 = ~PINC & 0x01;		 //one button
-		 //button2 = (~PINB & 0x38)>>3;		 //second three buttons
+		 button2 = (~PINC & 0x02)>>1;		 //second three buttons
+		 if(button2){PORTA = 0x01;}
+			else{PORTA = 0x00;}
 		 tick();
 		 _delay_ms(8);
 	 }
