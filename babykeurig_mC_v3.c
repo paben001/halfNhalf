@@ -39,11 +39,11 @@ void tick()
 		state = wait;
 		break;
 		case wait:
-		if (open == 1 && button1 == 0x01)		//if one of first three buttons pressed, turn counterclockwise.
+		if (open == 0 && button1 == 0x01)		//if one of first three buttons pressed, turn counterclockwise.
 		{
 			state = check2;
 		}
-		else if (open == 0 && button1 == 0x01)	//if one of second three buttons pressed, turn clockwise.
+		else if (open == 1 && button1 == 0x01)	//if one of second three buttons pressed, turn clockwise.
 		{
 			state = check1;
 		}
