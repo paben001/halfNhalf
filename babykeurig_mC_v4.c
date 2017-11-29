@@ -12,6 +12,7 @@ unsigned char button2;
 int numPhases;
 int open;  //0 if closed, 1 if open
 unsigned char temp;
+unsigned char slowdown;
 
 void SPI_MasterInit() {
 	//make sure that mosi and sck are outout
@@ -125,7 +126,8 @@ void tick()
 		case check2:
 		if (button1 == 0x01)
 		{
-			numPhases = ((90/5.625) * 64)/4;
+			// numPhases = ((90/5.625) * 64)/4; // half turn
+			numPhases = ((90/5.625) * 64)/8; // 1/4 turn
 		}
 		else
 		{
@@ -147,6 +149,23 @@ void tick()
 	}
 }
 
+void stirspeed(){
+	if(slowdown == 0){
+		PORTA = 0x01;
+		slowdown++;
+	}
+	else{
+		if (slowdown < 2){
+			slowdown++;
+			PORTA = 0x00;
+		}
+		else{
+			slowdown = 0;
+			PORTA = 0x00;
+		}
+	}
+}
+
 
 int main(void)
 {
@@ -158,7 +177,7 @@ int main(void)
 	//TimerSet(25);
 	
 	open = 0;
-	
+	slowdown = 0;
 
 	
 	while(1)
@@ -174,7 +193,9 @@ int main(void)
 		
 
 		
-		if(button2){PORTA = 0x01;}
+		if(button2){
+			stirspeed();
+		}
 		else{PORTA = 0x00;}
 		tick();
 		_delay_ms(8);
